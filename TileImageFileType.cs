@@ -3,7 +3,7 @@
 // This file is part of pdn-image-tiling-filetype, a FileType plugin for Paint.NET
 // that splits an image into tiles and saves them into a zip file.
 //
-// Copyright (c) 2013 Nicholas Hayes
+// Copyright (c) 2013, 2017 Nicholas Hayes
 //
 // This file is licensed under the MIT License.
 // See LICENSE.txt for complete licensing and attribution information.
@@ -33,6 +33,7 @@ using PaintDotNet.PropertySystem;
 
 namespace TileImageFileType
 {
+    [PluginSupportInfo(typeof(PluginSupportInfo))]
     public sealed class TileImageFileType : PropertyBasedFileType, IFileTypeFactory
     {
         private enum SavableBitDepths
