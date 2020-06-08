@@ -3,7 +3,7 @@
 // This file is part of pdn-image-tiling-filetype, a FileType plugin for Paint.NET
 // that splits an image into tiles and saves them into a zip file.
 //
-// Copyright (c) 2013 Nicholas Hayes
+// Copyright (c) 2013, 2017, 2020 Nicholas Hayes
 //
 // This file is licensed under the MIT License.
 // See LICENSE.txt for complete licensing and attribution information.
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("null54")]
 [assembly: AssemblyProduct("TileImageFileType")]
-[assembly: AssemblyCopyright("Copyright © 2013 Nicholas Hayes (aka null54)")]
+[assembly: AssemblyCopyright("Copyright © 2020 Nicholas Hayes (aka null54)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
