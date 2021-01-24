@@ -63,23 +63,41 @@ namespace TileImageFileType
 
         private enum PropertyNames
         {
-            TileSize
+            TileHeight,
+            TileWidth,
+            SquareTiles
         }
 
         public override PropertyCollection OnCreateSavePropertyCollection()
         {
+            const int DefaultTileSize = 256;
+            const int MinTileSize = 8;
+            const int MaxTileSize = 2048;
+
             List<Property> props = new List<Property> {
-                new Int32Property(PropertyNames.TileSize, 256, 8, 2048)
+                new Int32Property(PropertyNames.TileHeight, DefaultTileSize, MinTileSize, MaxTileSize),
+                new Int32Property(PropertyNames.TileWidth, DefaultTileSize, MinTileSize, MaxTileSize),
+                new BooleanProperty(PropertyNames.SquareTiles, true)
             };
 
-            return new PropertyCollection(props);
+            List<PropertyCollectionRule> rules = new List<PropertyCollectionRule> {
+                new LinkValuesBasedOnBooleanRule<int, Int32Property>(
+                    new object[] { PropertyNames.TileHeight, PropertyNames.TileWidth },
+                    PropertyNames.SquareTiles,
+                    false)
+            };
+
+            return new PropertyCollection(props, rules);
         }
 
         public override ControlInfo OnCreateSaveConfigUI(PropertyCollection props)
         {
             ControlInfo info = CreateDefaultSaveConfigUI(props);
 
-            info.SetPropertyControlValue(PropertyNames.TileSize, ControlInfoPropertyNames.DisplayName, "Tile size");
+            info.SetPropertyControlValue(PropertyNames.TileHeight, ControlInfoPropertyNames.DisplayName, "Tile height");
+            info.SetPropertyControlValue(PropertyNames.TileWidth, ControlInfoPropertyNames.DisplayName, "Tile width");
+            info.SetPropertyControlValue(PropertyNames.SquareTiles, ControlInfoPropertyNames.Description, "Square tiles");
+            info.SetPropertyControlValue(PropertyNames.SquareTiles, ControlInfoPropertyNames.DisplayName, string.Empty);
 
             return info;
         }
@@ -237,20 +255,21 @@ namespace TileImageFileType
             int width = input.Width;
             int height = input.Height;
 
-            int tileSize = token.GetProperty<Int32Property>(PropertyNames.TileSize).Value;
-
             using (RenderArgs args = new RenderArgs(scratchSurface))
             {
                 input.Render(args, true);
             }
 
+            int tileHeight = token.GetProperty<Int32Property>(PropertyNames.TileHeight).Value;
+            int tileWidth = token.GetProperty<Int32Property>(PropertyNames.TileWidth).Value;
+
             List<Rectangle> rects = new List<Rectangle>();
 
-            for (int y = 0; y < height; y += tileSize)
+            for (int y = 0; y < height; y += tileHeight)
             {
-                for (int x = 0; x < width; x += tileSize)
+                for (int x = 0; x < width; x += tileWidth)
                 {
-                    Rectangle bounds = new Rectangle(x, y, Math.Min(tileSize, width - x), Math.Min(tileSize, height - y));
+                    Rectangle bounds = new Rectangle(x, y, Math.Min(tileWidth, width - x), Math.Min(tileHeight, height - y));
                     rects.Add(bounds);
                 }
             }
